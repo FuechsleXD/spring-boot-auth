@@ -131,6 +131,21 @@ public class UserService {
     }
 
     /**
+     * Update last login timestamp for a user
+     */
+    public void updateLastLogin(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+
+        User user = userOptional.get();
+        user.setLastLogin(Instant.now());
+        userRepository.save(user);
+    }
+
+    /**
      * Delete user by ID
      */
     public void delete(Long id) {
@@ -146,4 +161,5 @@ public class UserService {
     public void deleteById(Long id) {
         delete(id);
     }
+
 }

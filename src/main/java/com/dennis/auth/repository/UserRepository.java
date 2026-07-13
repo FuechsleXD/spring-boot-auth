@@ -1,6 +1,6 @@
 package com.dennis.auth.repository;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +12,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
-    void deleteByRoleAndLastLoginBefore(String role, LocalDateTime cutoff);
+    void deleteByRoleAndLastLoginBefore(String role, Instant cutoff);
 }
