@@ -34,12 +34,10 @@ public class UserRestController {
      */
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody @Validated(ICreateUser.class) UserDto userDto) {
-        try {
-            UserDto createdUser = userService.create(userDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+
+        UserDto createdUser = userService.create(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+
     }
 
     /**

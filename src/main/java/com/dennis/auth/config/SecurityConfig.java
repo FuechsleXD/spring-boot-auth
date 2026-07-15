@@ -8,12 +8,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig implements WebMvcConfigurer {
+public class SecurityConfig {
 
     /**
      * Configure BCryptPasswordEncoder for password hashing
@@ -22,11 +20,6 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
-    }
-
-    @Override
-    public void configurePathMatch(PathMatchConfigurer configurer) {
-        configurer.addPathPrefix("auth", c -> true);
     }
 
     @Bean
