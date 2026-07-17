@@ -2,8 +2,11 @@ package com.dennis.auth.services;
 
 import java.time.Instant;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.dennis.auth.dtos.LoginRequest;
 import com.dennis.auth.dtos.LoginResponse;
@@ -22,10 +25,18 @@ public class AuthService {
     public LoginResponse login(LoginRequest request) {
 
         UserDto userDto = userService.findByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials"));
 
-        if (!passwordEncoder.matches(request.password(), userDto.password())) {
-            throw new RuntimeException("Invalid credentials");
+        boolean passwordMatches;
+        try {
+            passwordMatches = passwordEncoder.matches(request.password(), userDto.password());
+
+        } catch (IllegalArgumentException ex) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials", ex);
+        }
+
+        if (!passwordMatches) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
 
         userService.updateLastLogin(userDto.id());
