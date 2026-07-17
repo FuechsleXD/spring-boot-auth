@@ -73,20 +73,6 @@ public class UserRestController {
     }
 
     /**
-     * Authenticate user (Login)
-     * POST /api/users/login
-     */
-    @PostMapping("/login")
-    public ResponseEntity<UserDto> loginUser(@RequestBody UserDto userDto) {
-        try {
-            UserDto authenticatedUser = userService.authenticateUser(userDto);
-            return ResponseEntity.ok(authenticatedUser);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-    }
-
-    /**
      * Update user
      * PUT /api/users/{id}
      */

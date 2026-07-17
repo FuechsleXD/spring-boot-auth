@@ -11,6 +11,7 @@ import com.dennis.auth.models.User;
 import com.dennis.auth.repository.UserRepository;
 import com.dennis.auth.utils.Role;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
 import com.dennis.auth.dtos.UserDto;
@@ -23,6 +24,21 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+
+    @PostConstruct
+    public void init() {
+        // Create a default admin user if not exists
+        if (!userRepository.existsByEmail("admin@example.com")) {
+            User admin = new User();
+            admin.setEmail("admin@example.com");
+            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setRole(Role.ADMIN);
+            admin.setCreatedAt(Instant.now());
+            admin.setUpdatedAt(Instant.now());
+            userRepository.save(admin);
+            userRepository.flush();
+        }
+    }
 
     /**
      * Register a new user with encrypted password

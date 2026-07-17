@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class DeleteInactiveUserService {
+public class DeleteInactiveUserSchedulerService {
 
     private final UserRepository userRepository;
 
